@@ -10,10 +10,12 @@ const app = express();
 const PORT = process.env.PORT || 5501; // Ensure this matches your frontend
 
 // Middleware
-app.use(cors());
+app.use(cors({
+    origin: 'http://127.0.0.1:5501'
+}));
 app.use(express.json());
 
-// MongoDB Connection
+// MongoDB ConnectionD
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB.'))
   .catch(err => console.error('Could not connect to MongoDB:', err));
