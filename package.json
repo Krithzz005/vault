@@ -1,4 +1,10 @@
 {
+
+"scripts": {
+  "build": "vite build",
+  "preview": "vite preview"
+}
+
   "dependencies": {
     "fs": "^0.0.1-security",
     "mongodb": "^6.18.0",
