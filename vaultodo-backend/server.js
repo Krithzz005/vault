@@ -14,9 +14,13 @@ const PORT = process.env.PORT || 5501;
 
 // Middleware
 app.use(cors({
-    origin: 'http://127.0.0.1:5501'
-}));
+     origin: 'http://127.0.0.1:5501'
+     credentials: true
+   }));
+
 app.use(express.json());
+
+app.get('/', (req, res) => res.send('Hello! VaulToDo Server is running.'));
 
 // NEW: Serve static files from the 'uploads' directory
 app.use('/uploads', express.static(path.join(__dirname, 'uploads'))); // Ensure 'uploads' directory exists
