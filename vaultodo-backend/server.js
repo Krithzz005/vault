@@ -14,9 +14,14 @@ const PORT = process.env.PORT || 5501;
 
 // Middleware
 app.use(cors({
-     origin: 'https://vault-frontend-acmm.onrender.com'
-     credentials: true
-   }));
+  origin: [
+    "http://localhost:5501", // For local frontend testing
+    "https://vault-frontend-acmm.onrender.com"
+  ],
+  methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
+  credentials: true
+}));
+
 
 app.use(express.json());
 
