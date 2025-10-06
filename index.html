@@ -5,17 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vaulto-do</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- REMOVED: <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script> -->
 </head>
 <body>
-
-    <!-- Focus Window Login & Sign Up -->
     <div id="focus-login-container">
         <div id="login-window">
             <button id="unlock-button">Unlock Your Workspace</button>
             <div id="login-form-wrapper" class="collapsed">
                 
-                <!-- Sign In View -->
                 <div id="signin-view">
                     <h2>Secure Sign In</h2>
                     <form id="signin-form">
@@ -28,12 +24,10 @@
                         </div>
                         <button type="submit">Sign In</button>
                     </form>
-                    <!-- NEW: Forgot Password link -->
                     <p class="toggle-link"><a href="#" id="show-forgot-password">Forgot password?</a></p>
                     <p class="toggle-link">First time here? <a href="#" id="show-signup">Create an account</a></p>
                 </div>
 
-                <!-- Sign Up View (Initially Hidden) -->
                 <div id="signup-view" class="hidden">
                     <h2>Create Account</h2>
                     <form id="signup-form">
@@ -49,7 +43,6 @@
                     <p class="toggle-link">Already have an account? <a href="#" id="show-signin">Sign In</a></p>
                 </div>
 
-                <!-- NEW: Forgot Password View (Initially Hidden) -->
                 <div id="forgot-password-view" class="hidden">
                     <h2>Reset Password</h2>
                     <form id="forgot-password-form">
@@ -66,7 +59,6 @@
         </div>
     </div>
 
-    <!-- Main Application Layout (hidden by default) -->
     <div id="app-layout" class="hidden">
         <aside id="sidebar">
             <div class="sidebar-header">
@@ -75,10 +67,10 @@
             <nav class="sidebar-nav">
                 <ul>
                     <li class="active"><a href="#" id="dashboard-link">Dashboard</a></li>
-                    <!-- New Admin Link (conditionally visible via JavaScript based on user role) -->
                     <li id="admin-panel-link" class="hidden">
                         <a href="#" id="show-admin-panel">Admin Panel</a>
                     </li>
+                    <li><a href="#" id="file-storage-link">File Storage</a></li> 
                 </ul>
             </nav>
         </aside>
@@ -86,23 +78,27 @@
         <main id="main-content">
             <header>
                 <button id="menu-toggle">☰</button>
-                <!-- NEW: Search Bar -->
                 <div class="search-container">
                     <input type="text" id="task-search" placeholder="Search tasks...">
                 </div>
                 <div class="controls">
+                    <div class="user-profile-dropdown">
+                        <button id="user-menu-button" class="icon-only-button">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" class="user-icon"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+                        </button>
+                        <ul id="user-dropdown-menu" class="hidden">
+                            <li><a href="#" id="signout-link">Sign Out</a></li>
+                        </ul>
+                    </div>
                     <button id="theme-toggle">🌓</button>
-                    <button id="signout-button">Sign Out</button>
                 </div>
             </header>
             
-            <div id="dashboard">
-                <!-- MODIFIED: Task Form Container (with Due Date) -->
+            <div id="dashboard" class="dashboard-container">
                 <section class="task-form-container">
                     <form id="add-task-form">
                         <div class="input-with-icon">
-                            <span>&#9998;</span> <!-- Pencil Icon -->
-                            <input type="text" id="task-title" placeholder="What's on your mind?" required>
+                            <span>&#9998;</span> <input type="text" id="task-title" placeholder="What's on your mind?" required>
                         </div>
                         <div class="priority-dropdown-wrapper">
                             <select id="task-priority">
@@ -122,7 +118,7 @@
                     </form>
                 </section>
         
-                <section id="task-board" class="dashboard-container">
+                <section id="task-board">
                     <div class="task-column" id="To Do" ondragover="event.preventDefault()" ondrop="drop(event)">
                         <h2>To Do</h2>
                     </div>
@@ -135,33 +131,75 @@
                 </section>
             </div>
 
-            <!-- New Admin Dashboard Section (initially hidden) -->
             <div id="admin-dashboard-section" class="hidden dashboard-container">
                 <h2>Admin Dashboard</h2>
                 <section class="admin-users-list-container task-column">
                     <h3>User Management</h3>
                     <div id="admin-users-list">
-                        <!-- User list will be populated by JavaScript -->
                         <p class="placeholder-text">Loading users...</p>
                     </div>
                 </section>
                 <section class="admin-tasks-overview task-column">
                     <h3>All Tasks Overview</h3>
                     <div id="admin-all-tasks-list">
-                        <!-- All tasks will be populated by JavaScript -->
                         <p class="placeholder-text">Loading all tasks...</p>
                     </div>
                 </section>
-                <!-- Add other admin tools here as needed -->
+                </div>
+            
+            <div id="profile-page" class="hidden dashboard-container">
+                <section class="profile-card-container task-column">
+                    <h3>My Profile</h3>
+                    <form id="profile-form">
+                        <div class="profile-field">
+                            <label for="profile-email">Email:</label>
+                            <input type="email" id="profile-email" readonly>
+                        </div>
+                        <div class="profile-field">
+                            <label for="profile-name">Name:</label>
+                            <input type="text" id="profile-name" placeholder="Enter your name">
+                        </div>
+                        <div class="profile-field">
+                            <label for="profile-password">New Password:</label>
+                            <input type="password" id="profile-password" placeholder="Leave blank to keep current">
+                        </div>
+                        <p id="profile-message" class="message"></p>
+                        <button type="submit" id="save-profile-btn">Save Changes</button>
+                    </form>
+                </section>
             </div>
             
+            <div id="file-storage-page" class="hidden dashboard-container">
+                <div class="profile-card-container"> 
+                    <h2>File Storage & Management</h2>
+                    <p>Securely upload and manage your important files.</p>
+
+                    <div class="file-upload-area" id="drop-zone">
+                        <input type="file" id="file-upload-input" multiple class="hidden">
+                        <p>Drag & drop files here, or **Click to Upload**</p>
+                        <div class="modal-actions" style="justify-content: center;">
+                            <button class="vault-btn primary" id="trigger-upload-btn">
+                                Upload Files
+                            </button>
+                        </div>
+                        <div id="file-list" style="margin-top: 1.5rem; text-align: left; font-size: 0.9rem;"></div>
+                    </div>
+
+                    <div id="file-management-section" style="margin-top: 2rem;">
+                        <h3>Your Stored Files</h3>
+                        <ul id="stored-files-list" style="list-style: none; padding: 0;">
+                            <li class="placeholder-text">No files currently stored.</li>
+                        </ul>
+                    </div>
+                    
+                </div>
+            </div>
             <footer id="app-footer">
                 &copy; <span id="copyright-year"></span> Vaulto-do. All Rights Reserved.
             </footer>
         </main>
     </div>
 
-    <!-- NEW: Task Details Modal -->
     <div id="task-details-modal" class="modal-backdrop hidden">
         <div class="modal-content">
             <span class="close-button">&times;</span>
@@ -192,29 +230,65 @@
         </div>
     </div>
 
-    <!-- Secret Vault Modal -->
-    <div id="vault-modal" class="modal-backdrop hidden">
-        <div class="modal-content vault-style">
-            <div class="vault-header">
-                <svg class="lock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"></path></svg>
-                <h3>Secret Vault</h3>
-            </div>
-            <p>Enter your master password to unlock.</p>
-            <input type="password" id="vault-password-display" placeholder="••••••••" readonly>
+    <div id="secret-vault-modal" class="modal-backdrop hidden">
+        <div id="vault-modal-content" class="modal-content vault-style">
             
-            <div class="file-upload-area">
-                <p>Upload a file </p>
-                <input type="file" id="vault-file-input">
+            <button id="close-secret-vault-btn" class="close-button">&times;</button>
+
+            <div id="vault-access-setup-view">
+                <div class="vault-header">
+                    <svg class="lock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    <h3>Setup Secret Vault</h3>
+                </div>
+                <form id="vault-setup-form">
+                    <p id="vault-access-message" class="message"></p>
+                    <div class="profile-field">
+                        <label for="vault-key-new">Set Secret Key:</label>
+                        <input type="password" id="vault-key-new" required>
+                    </div>
+                    <div class="profile-field">
+                        <label for="vault-security-q">Security Question:</label>
+                        <input type="text" id="vault-security-q" placeholder="What is your pet's name?" required>
+                    </div>
+                    <button type="submit" class="vault-btn primary">Complete Setup</button>
+                </form>
             </div>
-            
-            <div class="modal-actions">
-                <button id="close-vault-modal" class="vault-btn secondary">Cancel</button>
-                <button class="vault-btn primary">Unlock</button>
+
+            <div id="vault-access-unlock-view" class="hidden">
+                <div class="vault-header">
+                    <svg class="lock-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+                    <h3>Secret Vault Access</h3>
+                </div>
+                <p id="vault-question-display">Security Question: <span id="security-question-text">Loading...</span></p>
+                <form id="vault-unlock-form">
+                    <p id="vault-unlock-message" class="message"></p>
+                    <div class="profile-field">
+                        <label for="vault-key-unlock">Enter Secret Key:</label>
+                        <input type="password" id="vault-key-unlock" required>
+                    </div>
+                    <button type="submit" class="vault-btn primary">Unlock Vault</button>
+                </form>
+            </div>
+
+            <div id="vault-storage-view" class="hidden">
+                <h4>Encrypted Files & Passwords</h4>
+                
+                <div class="file-upload-area" id="vault-drop-zone">
+                    <input type="file" id="vault-secret-file-input" multiple class="hidden"> <p>Drag & drop, or **Click to Upload**</p>
+                    <button class="vault-btn primary" id="vault-trigger-upload-btn">
+                        Upload Files (Encrypted)
+                    </button>
+                </div>
+                <div id="vault-file-list" style="margin-top: 10px;"></div>
+
+                <div id="vault-stored-files-list" style="margin-top: 20px;">
+                    <h5>Stored Files</h5>
+                    <ul id="vault-files-ul"> <li class="placeholder-text">No encrypted files stored.</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
-
-    <!-- Generic Confirmation/Alert Modal -->
     <div id="generic-modal" class="modal-backdrop hidden">
         <div class="modal-content">
             <span class="close-button" id="generic-modal-close-btn">&times;</span>
@@ -225,8 +299,7 @@
                 <p id="generic-modal-message"></p>
             </div>
             <div class="modal-actions" id="generic-modal-actions">
-                <!-- Buttons will be injected by JS -->
-            </div>
+                </div>
         </div>
     </div>
     

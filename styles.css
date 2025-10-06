@@ -52,7 +52,7 @@ body {
     min-height: 100vh; /* Ensure body takes full height for positioning */
     
     /* Set your desired background image */
-    background-image: url('images/background1.jpeg'); /* Make sure you have this image */
+    background-image: url('images/background2.jpg'); /* Make sure you have this image */
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
@@ -123,6 +123,7 @@ body::before {
     transition: all 0.4s ease 0.2s;
     opacity: 1;
     max-height: 500px;
+    
 }
 #login-form-wrapper.collapsed {
     opacity: 0;
@@ -210,13 +211,16 @@ body::before {
     overflow: hidden; /* Prevent main content from overflowing */
 }
 
+/* MODIFIED: HEADER LAYOUT TO USE FLEXBOX FOR BETTER ALIGNMENT */
 header {
     background-color: var(--glass-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    display: flex; justify-content: space-between; align-items: center;
+    display: flex; /* Changed from grid */
+    justify-content: space-between; /* Ensures space between sections */
+    align-items: center;
     padding: 1rem 2rem; border-bottom: 1px solid var(--border-color); flex-shrink: 0;
-    gap: 1rem; /* Added gap for elements in header */
+    gap: 0; /* Control spacing via search container margin */
 }
 #menu-toggle { font-size: 1.5rem; background: none; border: none; cursor: pointer; color: var(--text-color); }
 header .controls { display: flex; gap: 1rem; }
@@ -228,7 +232,7 @@ header .controls button {
     font-size: 1.25rem; 
     cursor: pointer; 
     line-height: 1; 
-    color: var(--text-color); /* Ensure icon color matches theme */
+    color: var(--text-color);
     transition: background-color 0.2s, border-color 0.2s;
 }
 header .controls button:hover {
@@ -237,39 +241,167 @@ header .controls button:hover {
 }
 #signout-button { padding: 0.5rem 1rem; font-size: 1rem; }
 
+/* NEW: User Profile Dropdown Styles */
+.user-profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+#user-menu-button {
+    background-color: var(--secondary-button-bg);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    padding: 0.5rem; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+#user-menu-button.icon-only-button {
+    padding: 0.5rem; 
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    background-color: var(--secondary-button-bg);
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#user-menu-button:hover {
+    background-color: var(--secondary-button-hover-bg);
+}
+
+#user-menu-button .user-icon {
+    width: 24px;
+    height: 24px;
+    color: var(--text-color);
+}
+
+.dropdown-arrow {
+    display: none;
+}
+
+#user-dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    list-style: none;
+    padding: 0.5rem 0;
+    margin: 0.5rem 0 0;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px var(--shadow-color);
+    z-index: 50;
+    min-width: 150px;
+}
+
+#user-dropdown-menu.hidden {
+    display: none;
+}
+
+#user-dropdown-menu li a {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    text-decoration: none;
+    color: var(--text-color);
+}
+
+#user-dropdown-menu li a:hover {
+    background-color: var(--column-bg);
+}
+
 /* Dashboard and Admin Dashboard containers */
-/* Removed generic flex properties from .dashboard-container */
 .dashboard-container { 
     overflow: auto; 
     flex-grow: 1; 
     padding: 2rem; 
     gap: 1.5rem; 
-    align-items: flex-start; /* Align columns to the top */
+    align-items: flex-start;
 }
 
 /* Specific layout for the main dashboard (3 columns) */
-#dashboard { /* This is the parent of task-form-container and task-board */
-    display: flex; /* Kept display flex here for overall dashboard container */
-    flex-direction: column; /* This means task-form-container and task-board stack */
-    /* Removed flex-wrap, as task-form-container and task-board should always stack */
+#dashboard, #task-board {
+    display: flex; 
+    flex-direction: column;
 }
-
-#task-board { /* NEW: Explicitly target task-board for its children (To Do, In Progress, Done) */
+#task-board { 
     display: flex;
-    flex-direction: row; /* CHANGED: Arrange task columns (To Do, In Progress, Done) horizontally */
-    flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
-    gap: 1.5rem; /* Ensure gap between columns */
-    width: 100%; /* Ensure it takes full width within #dashboard */
-    justify-content: flex-start; /* Align columns to start */
-    align-items: flex-start; /* Align items to top */
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    gap: 1.5rem; 
+    width: 100%; 
+    justify-content: flex-start;
+    align-items: flex-start; 
 }
 
 
 /* Specific layout for the admin dashboard (User Management, All Tasks Overview side-by-side) */
 #admin-dashboard-section {
-    display: flex; /* Makes the admin dashboard a flex container */
-    flex-direction: row; /* Arrange direct children (task-column) horizontally */
-    flex-wrap: wrap; /* Allow these main sections to wrap on smaller screens */
+    display: flex; 
+    flex-direction: row; 
+    flex-wrap: wrap; 
+}
+
+/* NEW: Profile Page Styles */
+#profile-page {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2rem;
+}
+.profile-card-container {
+    padding: 2rem;
+    width: 100%;
+    max-width: 600px;
+    box-sizing: border-box;
+}
+
+.profile-field {
+    margin-bottom: 1rem;
+}
+
+.profile-field label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.profile-field input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--card-bg);
+    color: var(--text-color);
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.profile-field input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+}
+
+/* Style for the save button on the profile page */
+#save-profile-btn {
+    background-color: var(--primary-button-bg);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#save-profile-btn:hover {
+    background-color: var(--primary-button-hover-bg);
 }
 
 .task-column {
@@ -280,49 +412,49 @@ header .controls button:hover {
     padding: 1rem;
     flex-shrink: 0; 
     min-height: 300px;
-    box-shadow: 0 4px 8px var(--shadow-color); /* Added shadow to columns */
-    display: flex; /* Make column a flex container */
-    flex-direction: column; /* Stack items vertically within the column */
+    box-shadow: 0 4px 8px var(--shadow-color);
+    display: flex;
+    flex-direction: column; 
 }
 
 /* Width for task columns in the main dashboard (3 columns) */
-#task-board .task-column { /* CHANGED: Target .task-column inside #task-board */
-    flex: 1 1 calc(33.333% - 1rem); /* Roughly 3 columns with gap */
+#task-board .task-column {
+    flex: 1 1 calc(33.333% - 1rem); 
     max-width: calc(33.333% - 1rem);
-    min-width: 280px; /* Minimum width for main dashboard columns */
+    min-width: 280px; 
 }
 
 /* Width for task columns in the admin dashboard (User Management, All Tasks Overview - side-by-side) */
 #admin-dashboard-section .task-column {
-    flex: 1 1 calc(50% - 0.75rem); /* Each column takes roughly half the width, accounting for gap */
-    max-width: calc(50% - 0.75rem); /* Max width to ensure two columns */
-    min-width: 300px; /* Minimum width before wrapping to next row on smaller screens */
+    flex: 1 1 calc(50% - 0.75rem); 
+    max-width: calc(50% - 0.75rem);
+    min-width: 300px;
 }
 
 .task-column h2 { 
     font-size: 1.1rem; 
     margin-top: 0; 
     padding-bottom: 1rem; 
-    border-bottom: 1px solid var(--border-color); /* Separator for column title */
-    margin-bottom: 1rem; /* Space after separator */
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 1rem; 
 }
 .task-card { 
     background-color: var(--card-bg); 
     border-radius: 6px; 
     padding: 1rem; 
-    margin-top: 0.5rem; /* Reduced top margin for cards */
+    margin-top: 0.5rem; 
     box-shadow: 0 2px 4px var(--shadow-color); 
     border-left: 4px solid transparent; 
     cursor: grab; 
     position: relative; 
-    transition: transform 0.2s ease, box-shadow 0.2s ease; /* Smooth hover effect */
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 .task-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
 }
 .task-card h3 {
-    margin: 0 0 0.5rem 0; /* Space below title */
+    margin: 0 0 0.5rem 0; 
     font-size: 1rem;
     font-weight: 600;
 }
@@ -362,26 +494,34 @@ header .controls button:hover {
 /* --- 4. ENHANCED Task Form --- */
 .task-form-container { 
     padding: 2rem 2rem 0 2rem; 
-    background-color: var(--glass-bg); /* Use glass effect for form container */
+    background-color: var(--glass-bg); 
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
-    margin-bottom: 1.5rem; /* Space between form and board */
-    border-radius: 12px; /* Match other rounded elements */
-    margin: 1.5rem 2rem 0; /* Adjust margin to match other sections */
+    margin-bottom: 1.5rem; 
+    border-radius: 12px; 
+    margin: 1.5rem 2rem 0; 
     box-shadow: 0 4px 8px var(--shadow-color);
 }
 #add-task-form { 
     display: flex; 
     gap: 1rem; 
     align-items: center; 
-    flex-wrap: wrap; /* Allow wrapping on small screens */
+    flex-wrap: wrap; 
+    background-color: var(--card-bg);
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+/* MODIFIED: Increased min-width for better alignment */
 .input-with-icon {
     position: relative;
     flex-grow: 1;
-    min-width: 200px; /* Ensure input has enough space */
+    min-width: 300px; /* Increased from 200px */
+    background-color: var(--column-bg);
+    border-radius: 8px;
+    padding: 0.5rem;
 }
 .input-with-icon span {
     position: absolute;
@@ -392,10 +532,10 @@ header .controls button:hover {
     opacity: 0.5;
 }
 #task-title {
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background: none;
+    border: none;
     border-radius: 10px;
-    padding: 0.8rem 0.8rem 0.8rem 40px; /* Left padding for icon */
+    padding: 0.8rem 0.8rem 0.8rem 40px; 
     font-size: 1rem;
     width: 100%;
     box-sizing: border-box;
@@ -404,8 +544,7 @@ header .controls button:hover {
 }
 #task-title:focus {
     outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+    background-color: var(--card-bg);
 }
 
 .priority-dropdown-wrapper {
@@ -415,19 +554,18 @@ header .controls button:hover {
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
-    background-color: var(--card-bg);
-    border: 1px solid var(--border-color);
+    background-color: var(--column-bg);
+    border: none;
     padding: 0.8rem 2rem 0.8rem 1rem;
     border-radius: 10px;
     color: var(--text-color);
     cursor: pointer;
-    min-width: 120px; /* Ensure dropdown has enough space */
-    transition: border-color 0.2s, box-shadow 0.2s;
+    min-width: 120px; 
+    transition: all 0.2s;
 }
 #task-priority:focus {
     outline: none;
-    border-color: var(--accent-color);
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.4);
+    background-color: var(--card-bg);
 }
 .priority-dropdown-wrapper::after {
     content: '▼';
@@ -441,11 +579,11 @@ header .controls button:hover {
     opacity: 0.5;
 }
 
-.date-input-wrapper { /* Style for the due date input container */
+.date-input-wrapper { 
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    background-color: var(--card-bg);
+    background-color: var(--column-bg);
     border: 1px solid var(--border-color);
     border-radius: 10px;
     padding: 0.8rem 1rem;
@@ -487,10 +625,12 @@ header .controls button:hover {
     line-height: 1;
 }
 
-/* --- NEW: Search Bar Styles --- */
+/* --- NEW: Search Bar Styles (MODIFIED) --- */
 .search-container {
-    flex-grow: 1; /* Allows search bar to take available space */
-    margin: 0 1rem; /* Adjust margin if needed */
+    flex-grow: 0; /* Prevents it from taking all space */
+    width: 100%;
+    max-width: 400px; /* Constrains the search bar size */
+    margin: 0 auto; /* Centers the search bar */
 }
 
 #task-search {
@@ -499,7 +639,7 @@ header .controls button:hover {
     border-radius: 8px;
     border: 1px solid var(--border-color);
     font-size: 1rem;
-    background-color: var(--card-bg); /* Match card background */
+    background-color: var(--card-bg);
     color: var(--text-color);
     transition: all 0.3s ease;
 }
@@ -511,59 +651,71 @@ header .controls button:hover {
 }
 
 /* --- NEW: Task Details Modal Styles --- */
-/* This reuses and overrides the general .modal-backdrop and .modal-content */
 #task-details-modal .modal-content {
-    background-color: var(--modal-bg-light);
-    color: var(--text-color);
+    background-color: var(--modal-bg-dark); 
+    color: #f0f0f0; 
     padding: 2rem;
     border-radius: 12px;
     box-shadow: 0 8px 32px 0 rgba(0,0,0,0.3);
     max-width: 550px;
     width: 90%;
     position: relative;
-    transform: translateY(-20px);
+    transform: translateY(0); 
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
 body.dark-mode #task-details-modal .modal-content {
     background-color: var(--modal-bg-dark);
 }
-
+/* Updated styling for task details modal content */
 #task-details-modal .modal-header {
-    border-bottom: 1px solid var(--border-color);
-    padding-bottom: 1rem;
+    border-bottom: none;
+    padding-bottom: 0;
     margin-bottom: 1.5rem;
+    text-align: center;
 }
 
 #task-details-modal h3 {
     margin: 0;
     font-size: 1.8rem;
-    color: var(--accent-color);
-    word-wrap: break-word; /* Prevent long titles from overflowing */
+    color: #f1f1f1;
+    word-wrap: break-word;
+    background-color: #ef4444; 
+    border-radius: 8px;
+    padding: 0.5rem;
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .detail-item {
     margin-bottom: 1rem;
     font-size: 0.95rem;
+    padding: 0.5rem 1rem;
+    background-color: #333333;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
 }
-
 .detail-item strong {
-    display: block; /* Ensures strong is on its own line */
+    display: block;
     font-weight: 600;
-    color: var(--text-color);
+    color: #f1f1f1;
     opacity: 0.9;
-    margin-bottom: 0.25rem;
 }
-
+.detail-item span {
+    color: var(--accent-color);
+    font-weight: 600;
+}
 #modal-task-description {
     width: 100%;
     height: 120px;
     padding: 0.8rem;
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    background-color: var(--card-bg); /* Match other inputs */
+    background-color: var(--card-bg);
     color: var(--text-color);
-    resize: vertical; /* Allow vertical resizing */
+    resize: vertical;
     font-family: inherit;
     font-size: 0.95rem;
     box-sizing: border-box;
@@ -586,9 +738,8 @@ body.dark-mode #task-details-modal .modal-content {
     font-size: 0.95rem;
     font-weight: 500;
     transition: background-color 0.2s;
-    float: right; /* Align to the right */
+    float: right;
 }
-
 #save-task-details-btn:hover {
     background-color: var(--primary-button-hover-bg);
 }
@@ -620,7 +771,7 @@ body.dark-mode #task-details-modal .modal-content {
     opacity: 0.7; 
     margin-top: auto; 
     color: white;
-    background-color: rgba(0, 0, 0, 0.2); /* Slightly darker background for footer */
+    background-color: rgba(0, 0, 0, 0.2); 
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -633,28 +784,28 @@ body.dark-mode #task-details-modal .modal-content {
     left: 0; 
     width: 100%; 
     height: 100%; 
-    background-color: rgba(0, 0, 0, 0.6); /* Darker overlay for modals */
+    background-color: rgba(0, 0, 0, 0.6); 
     display: flex; 
     justify-content: center; 
     align-items: center; 
     z-index: 1000; 
     transition: opacity 0.3s ease;
-    opacity: 1; /* Default to visible for this example, hidden by JS */
+    opacity: 1; 
 }
 .modal-backdrop.hidden {
     opacity: 0;
-    pointer-events: none; /* Make it unclickable when hidden */
+    pointer-events: none; 
 }
 
 .modal-content {
-    background-color: var(--modal-bg-light); /* Default for light mode */
+    background-color: var(--modal-bg-light); 
     border-radius: 12px;
     box-shadow: 0 8px 32px 0 rgba(0,0,0,0.2);
     padding: 2rem;
     width: 90%;
     max-width: 500px;
     position: relative;
-    transform: translateY(0); /* Default to visible for this example, adjusted by JS */
+    transform: translateY(0); 
     transition: transform 0.3s ease-out, opacity 0.3s ease-out;
 }
 
@@ -664,7 +815,7 @@ body.dark-mode .modal-content {
 
 /* Specific Vault Modal Styles (overrides general modal-content) */
 .modal-content.vault-style {
-    background: #1e1e1e; /* Specific dark background for vault */
+    background: #1e1e1e; 
     color: #f0f0f0;
     border: 1px solid #444;
     border-radius: 15px;
@@ -692,10 +843,10 @@ body.dark-mode .modal-content {
     border-radius: 8px;
     padding: 0.75rem;
     font-size: 1.5rem;
-    color: #0f0; /* Green text for a "secret" look */
+    color: #0f0; 
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
-    letter-spacing: 0.5em; /* Spaced out characters */
+    letter-spacing: 0.5em; 
     margin-bottom: 1.5rem;
     width: 100%;
     box-sizing: border-box;
@@ -712,13 +863,16 @@ body.dark-mode .modal-content {
     border-color: var(--accent-color);
     background-color: rgba(59, 130, 246, 0.1);
 }
-.file-upload-area p {
-    margin: 0 0 0.5rem 0;
-    font-size: 0.9rem;
-    opacity: 0.7;
+/* NEW: Style to highlight the drop zone (used by JS for visual feedback) */
+.file-upload-area.highlight {
+    border-color: var(--accent-color);
+    background-color: rgba(59, 130, 246, 0.2); 
+    box-shadow: 0 0 10px rgba(59, 130, 246, 0.5);
+    transition: all 0.2s ease;
 }
+
 #vault-file-input {
-    display: none; /* Hide native file input */
+    display: none; 
 }
 .modal-actions { display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1rem; }
 .vault-btn {
@@ -737,8 +891,8 @@ body.dark-mode .modal-content {
     background-color: var(--primary-button-hover-bg);
 }
 .vault-btn.secondary {
-    background-color: var(--secondary-button-bg); /* Use new variable */
-    color: var(--text-color); /* Match theme text color */
+    background-color: var(--secondary-button-bg); 
+    color: var(--text-color); 
 }
 body.dark-mode .vault-btn.secondary {
     background-color: #444;
@@ -754,8 +908,6 @@ body.dark-mode .vault-btn.secondary {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    /* Removed margin-bottom, padding-bottom, border-bottom from here */
-    /* These properties will be defined by the specific selectors below */
 }
 
 .user-card h3 {
@@ -788,7 +940,7 @@ body.dark-mode .vault-btn.secondary {
     font-size: 0.9rem;
     cursor: pointer;
     transition: all 0.2s ease;
-    color: var(--text-color); /* Default text color */
+    color: var(--text-color);
     position: relative;
     background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
     background-repeat: no-repeat;
@@ -825,7 +977,7 @@ body.dark-mode .vault-btn.secondary {
 }
 
 .delete-user-btn {
-    background-color: var(--high-priority-color); /* Red for delete */
+    background-color: var(--high-priority-color); 
     color: white;
     border: none;
     padding: 0.5rem 1rem;
@@ -836,7 +988,7 @@ body.dark-mode .vault-btn.secondary {
 }
 
 .delete-user-btn:hover {
-    background-color: #dc2626; /* Darker red on hover */
+    background-color: #dc2626; 
 }
 
 /* Placeholder text for empty lists */
@@ -848,36 +1000,35 @@ body.dark-mode .vault-btn.secondary {
 }
 
 /* Styles for horizontal layout of cards within admin lists */
-/* This section controls the layout of cards *within* User Management and All Tasks Overview */
 #admin-users-list,
 #admin-all-tasks-list {
     display: flex;
-    flex-direction: row; /* Arrange items horizontally */
-    flex-wrap: wrap; /* Allow cards to wrap to the next line within their section */
-    gap: 1rem; /* Space between cards */
-    justify-content: flex-start; /* Align cards to the start */
-    align-items: flex-start; /* Align items to the top */
-    width: 100%; /* Ensure container takes full width of its parent column */
+    flex-direction: row; 
+    flex-wrap: wrap; 
+    gap: 1rem; 
+    justify-content: flex-start; 
+    align-items: flex-start;
+    width: 100%;
     padding: 0; 
     margin: 0;
-    overflow-x: hidden; /* Hide horizontal scrollbar */
+    overflow-x: hidden;
 }
 
 /* Adjust card width within admin lists to allow multiple per row */
 #admin-users-list .user-card,
 #admin-all-tasks-list .task-card {
-    flex: 1 1 calc(33.333% - 1rem); /* Aim for 3 cards per row, adjusting for gap */
-    min-width: 200px; /* Ensure a minimum width for readability */
-    max-width: 350px; /* Ensure a maximum width */
+    flex: 1 1 calc(33.333% - 1rem); 
+    min-width: 200px;
+    max-width: 350px; 
     margin-top: 0; 
-    padding: 1rem; /* Ensure consistent padding */
-    background-color: var(--card-bg); /* Ensure background color matches task cards */
-    border: 1px solid var(--border-color); /* A subtle border all around */
-    border-left: 4px solid transparent; /* Keep left border for priority if applicable */
-    border-radius: 6px; /* Ensure rounded corners */
-    box-shadow: 0 2px 4px var(--shadow-color); /* Keep card shadow */
-    box-sizing: border-box; /* Include padding and border in the element's total width and height */
-    margin-bottom: 0; /* Ensure no vertical margin between cards in the row */
+    padding: 1rem;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border-color); 
+    border-left: 4px solid transparent; 
+    border-radius: 6px; 
+    box-shadow: 0 2px 4px var(--shadow-color);
+    box-sizing: border-box; 
+    margin-bottom: 0;
 }
 
 
@@ -903,34 +1054,34 @@ body.dark-mode .vault-btn.secondary {
         position: fixed;
         height: 100vh;
         z-index: 900;
-        margin-left: calc(-1 * var(--sidebar-width)); /* Ensure it's off-screen by default */
+        margin-left: calc(-1 * var(--sidebar-width)); 
         box-shadow: 2px 0 10px rgba(0,0,0,0.2);
     }
     #sidebar.collapsed {
         margin-left: calc(-1 * var(--sidebar-width));
     }
-    #sidebar.expanded { /* Add a class to expand sidebar on smaller screens */
+    #sidebar.expanded { 
         margin-left: 0;
     }
     #menu-toggle {
-        display: block; /* Show menu toggle on small screens */
+        display: block; 
     }
     header {
-        justify-content: flex-start; /* Adjust alignment for smaller screens */
+        justify-content: flex-start; 
         gap: 0.5rem;
     }
     .search-container {
         margin: 0 0.5rem;
     }
     .dashboard-container {
-        flex-direction: column; /* Stack columns vertically */
-        align-items: center; /* Center columns */
+        flex-direction: column; 
+        align-items: center; 
         padding: 1rem;
         gap: 1rem;
     }
     .task-column {
-        width: 100%; /* Full width for columns */
-        max-width: 400px; /* Constrain max width for readability */
+        width: 100%; 
+        max-width: 400px; 
     }
     #add-task-form {
         flex-direction: column;
@@ -952,20 +1103,19 @@ body.dark-mode .vault-btn.secondary {
     }
 
     /* Adjust cards within admin lists for single column on small screens */
-    /* On small screens, we want them to wrap, so revert flex-wrap to 'wrap' */
     #admin-users-list,
     #admin-all-tasks-list {
-        flex-wrap: wrap; /* Allow wrapping on small screens for better readability */
-        overflow-x: hidden; /* No horizontal scroll on small screens */
-        justify-content: center; /* Center items when wrapped */
+        flex-wrap: wrap; 
+        overflow-x: hidden; 
+        justify-content: center; 
     }
 
     #admin-users-list .user-card,
     #admin-all-tasks-list .task-card {
-        flex: 1 1 calc(100% - 1rem); /* Single column on small screens with gap */
+        flex: 1 1 calc(100% - 1rem); 
         max-width: calc(100% - 1rem);
-        min-width: unset; /* Allow to shrink to fit small screens */
-        border-bottom: 1px solid var(--border-color); /* Add border back for individual cards when stacked */
+        min-width: unset; 
+        border-bottom: 1px solid var(--border-color); 
     }
     /* Remove bottom border for the very last card on small screens when stacked */
     #admin-users-list .user-card:last-child,
