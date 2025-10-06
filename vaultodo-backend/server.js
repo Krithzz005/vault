@@ -14,7 +14,7 @@ const PORT = process.env.PORT || 5501;
 
 // Middleware
 app.use(cors({
-     origin: 'http://127.0.0.1:5501'
+     origin: 'https://vault-frontend-acmm.onrender.com'
      credentials: true
    }));
 
